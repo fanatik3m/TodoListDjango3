@@ -12,9 +12,6 @@ from .utils import AddContextMixin
 def index(request):
     context = {
         'title': 'Main Page',
-        'menu': [
-            {'title': 'About website', 'url_name': 'register'},
-        ]
     }
 
     return render(request, 'tasks/index.html', context=context)

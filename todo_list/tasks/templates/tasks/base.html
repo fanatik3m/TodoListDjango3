@@ -11,12 +11,34 @@
 </head>
 <body>
     {% block mainmenu %}
-    <ul class="flex justify-center">
-        {% for m in menu %}
-        <li>
-            <a href="{% url m.url_name %}" class="text-2xl font-bold border-b border-indigo-600">{{ m.title }}</a>
+    <ul class="flex justify-between border-b-2 border-indigo-600 mb-5">
+        <li class="mx-4">
+            <a href="{% url 'index' %}" class="flex justify-left text-2xl font-bold border-x-2 px-2 hover:text-indigo-600 border-white hover:border-indigo-600">Main Page</a>
         </li>
-        {% endfor %}
+            {% for m in menu %}
+            <li>
+                <a href="{% url m.url_name %}" class="flex justify-right text-2xl font-bold border-x-2 px-2 hover:text-indigo-600 border-white hover:border-indigo-600">{{ m.title }}</a>
+            </li>
+            {% endfor %}
+        {% if request.user.is_authenticated %}
+            <div class="flex justify-center">
+                <li class="mx-4">
+                    <p class="inline flex justify-right text-2xl font-bold px-2 text-indigo-600">{{ request.user.username }}</p>
+                </li>
+                <li class="mr-4">
+                <a href="{% url 'logout' %}" class="flex justify-right text-2xl font-bold border-x-2 px-2 hover:text-indigo-600 border-white hover:border-indigo-600">Log out</a>
+                </li>
+            </div>
+        {% else %}
+            <div class="flex justify-center">
+                <li class="mx-4">
+                    <a href="{% url 'register' %}" class="flex justify-right text-2xl font-bold border-x-2 px-2 hover:text-indigo-600 border-white hover:border-indigo-600">Register</a>
+                </li>
+                <li class="mr-4">
+                <a href="{% url 'login' %}" class="flex justify-right text-2xl font-bold border-x-2 px-2 hover:text-indigo-600 border-white hover:border-indigo-600">Log in</a>
+                </li>
+            </div>
+        {% endif %}
     </ul>
     {% endblock mainmenu %}
 

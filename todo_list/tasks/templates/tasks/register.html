@@ -1,0 +1,21 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<h1 class="m-4 inline text-2xl font-bold border-b border-indigo-500">{{ title }}</h1>
+
+<form method="post" class="m-4">
+    {% csrf_token %}
+
+     <div>{{ form.non_field_errors }}</div>
+
+    {% for f in form %}
+    <p><label for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+    <div>{{ f.errors }}</div>
+    {% endfor %}
+
+    <button type="submit" class="my-2 p-2 border border-indigo-600 rounded-full hover:text-white hover:bg-indigo-600 hover:border-white border-2">
+        {{title}} </button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>Todo list site</title>
+    {% endif %}
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    {% block mainmenu %}
+    <ul class="flex justify-center">
+        {% for m in menu %}
+        <li>
+            <a href="{% url m.url_name %}" class="text-2xl font-bold border-b border-indigo-600">{{ m.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endblock mainmenu %}
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

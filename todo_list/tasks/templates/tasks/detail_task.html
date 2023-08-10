@@ -1,0 +1,13 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<div class="m-4">
+    <h1 class="inline text-2xl font-bold border-b border-indigo-500 text-indigo-600">{{ task.title }}</h1>
+    <p class="font-bold mt-2">{{ task.description }}</p>
+    <p>Создано: {{ task.time_create|date:"d-m-Y H:i:s" }}</p>
+    <p class="mb-2">Последнее обновление: {{ task.time_update|date:"d-m-Y H:i:s" }}</p>
+    <hr>
+</div>
+
+{% endblock %}

@@ -23,7 +23,7 @@ class MainPageView(AddContextMixin, ListView):
         return {**context, **user_context}
 
     def get_queryset(self):
-        return Task.objects.filter(user_id=self.request.user.id)
+        return Task.objects.filter(user_id=self.request.user.id).select_related('user')
 
 
 class RegisterUser(AddContextMixin, CreateView):

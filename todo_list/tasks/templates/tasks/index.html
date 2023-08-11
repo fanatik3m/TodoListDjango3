@@ -1,6 +1,9 @@
 {% extends 'tasks/base.html' %}
+{% load tasks_tags %}
 
 {% block content %}
+
+{% show_filters %}
 
 {% if tasks %}
     <div class="border-y-2 border-indigo-600">

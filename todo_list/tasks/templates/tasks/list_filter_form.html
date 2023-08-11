@@ -1,0 +1,8 @@
+<form method="get">
+    <select name="filter_field">
+        {% for option in options %}
+            <option value="{{ option.name }}">{{ option.label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Фильтровать</button>
+</form>

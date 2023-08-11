@@ -2,7 +2,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotAllowed
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView
@@ -10,6 +10,8 @@ from django.views.generic import CreateView, ListView, DetailView
 from .forms import RegisterUserForm, LoginUserForm, AddTaskForm, EditTaskFieldsForm
 from .utils import AddContextMixin
 from .models import Task
+
+from .templatetags.tasks_tags import options
 
 
 class MainPageView(AddContextMixin, ListView):
@@ -23,7 +25,22 @@ class MainPageView(AddContextMixin, ListView):
         return {**context, **user_context}
 
     def get_queryset(self):
-        return Task.objects.filter(user_id=self.request.user.id).select_related('user')
+        filter_field = self.request.GET.get('filter_field')
+        if filter_field is None:
+            return Task.objects.filter(user_id=self.request.user.id).order_by(
+                '-time_update').select_related('user')
+
+        options_names = [i.get('name') for i in options]
+        if filter_field not in options_names:
+            raise PermissionDenied()
+
+        if filter_field == 'is_completed':
+            return Task.objects.filter(user_id=self.request.user.id, is_completed=True).select_related('user')
+        elif filter_field == 'is_uncompleted':
+            return Task.objects.filter(user_id=self.request.user.id, is_completed=False).select_related('user')
+        else:
+            return Task.objects.filter(user_id=self.request.user.id).order_by(
+                f'-{filter_field}').select_related('user')
 
 
 class RegisterUser(AddContextMixin, CreateView):
@@ -85,7 +102,7 @@ def add_task(request):
 @login_required
 def task_detail(request, user, task_slug):
     if request.user.username != user:
-        raise PermissionDenied()
+        return HttpResponseForbidden()
 
     task = Task.objects.get(user_id=request.user.id, slug=task_slug)
     context = {

@@ -1,5 +1,12 @@
 from django import template
 
+options = (
+    {'name': 'time_update', 'label': 'Время последнего изменения'},
+    {'name': 'time_create', 'label': 'Время создания'},
+    {'name': 'is_completed', 'label': 'Выполненные'},
+    {'name': 'is_uncompleted', 'label': 'Невыполненные'}
+)
+
 register = template.Library()
 
 
@@ -10,3 +17,8 @@ def show_menu_tag():
     ]
 
     return {'menu': menu}
+
+
+@register.inclusion_tag('tasks/list_filter_form.html', name='show_filters')
+def show_filters():
+    return {'options': options}

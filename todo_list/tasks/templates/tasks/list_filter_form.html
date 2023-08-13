@@ -1,8 +1,8 @@
-<form method="get">
-    <select name="filter_field">
+<form method="get" class="m-5">
+    <select name="filter_field" class="font-bold border-2 border-black hover:border-indigo-600 hover:border-2 focus:border-indigo-600 focus:border-2">
         {% for option in options %}
             <option value="{{ option.name }}">{{ option.label }}</option>
         {% endfor %}
     </select>
-    <button type="submit">Фильтровать</button>
+    <button type="submit" class="mx-2 p-2 border-2 border-indigo-600 text-indigo-600 font-bold rounded-full hover:bg-indigo-600 hover:text-white">Фильтровать</button>
 </form>
